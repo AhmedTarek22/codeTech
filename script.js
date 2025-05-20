@@ -1,3 +1,331 @@
+// function setupCarousel(carouselElement, indicatorsElement) {
+//   const track = carouselElement.querySelector(".carousel-track");
+//   const slides = Array.from(track.querySelectorAll(".carousel-slide"));
+//   const slideCount = slides.length;
+//   let currentIndex = 0;
+//   let autoScrollInterval;
+
+//   // Clone first and last slides for infinite effect
+//   const firstSlideClone = slides[0].cloneNode(true);
+//   const lastSlideClone = slides[slideCount - 1].cloneNode(true);
+
+//   track.appendChild(firstSlideClone);
+//   track.insertBefore(lastSlideClone, slides[0]);
+
+//   // Create indicators
+//   slides.forEach((_, index) => {
+//     const indicator = document.createElement("div");
+//     indicator.classList.add("carousel-indicator");
+//     indicator.addEventListener("click", () => {
+//       goToSlide(index);
+//     });
+//     indicatorsElement.appendChild(indicator);
+//   });
+
+//   const indicators = Array.from(
+//     indicatorsElement.querySelectorAll(".carousel-indicator")
+//   );
+
+//   // Set initial position
+//   track.style.transform = `translateX(-${100}%)`;
+//   updateIndicators(0);
+
+//   // Start auto-scroll
+//   startAutoScroll();
+
+//   function startAutoScroll() {
+//     if (autoScrollInterval) clearInterval(autoScrollInterval);
+//     autoScrollInterval = setInterval(() => {
+//       nextSlide();
+//     }, 4000);
+//   }
+
+//   function goToSlide(index) {
+//     const adjustedPosition = (index + 1) * 100;
+//     track.style.transition = "transform 0.7s ease-in-out";
+//     track.style.transform = `translateX(-${adjustedPosition}%)`;
+//     currentIndex = index;
+//     updateIndicators(currentIndex);
+//     startAutoScroll();
+//   }
+
+//   function nextSlide() {
+//     if (currentIndex >= slideCount - 1) {
+//       goToSlide(slideCount - 1 + 1);
+
+//       setTimeout(() => {
+//         track.style.transition = "none";
+//         track.style.transform = `translateX(-${100}%)`;
+//         currentIndex = 0;
+//         updateIndicators(currentIndex);
+
+//         setTimeout(() => {
+//           track.style.transition = "transform 0.7s ease-in-out";
+//         }, 50);
+//       }, 700);
+//     } else {
+//       goToSlide(currentIndex + 1);
+//     }
+//   }
+
+//   function updateIndicators(activeIndex) {
+//     indicators.forEach((indicator, index) => {
+//       if (index === activeIndex) {
+//         indicator.classList.add("active");
+//       } else {
+//         indicator.classList.remove("active");
+//       }
+//     });
+//   }
+
+//   // Handle transition end
+//   track.addEventListener("transitionend", () => {
+//     if (currentIndex >= slideCount) {
+//       track.style.transition = "none";
+//       track.style.transform = `translateX(-${100}%)`;
+//       currentIndex = 0;
+//       updateIndicators(currentIndex);
+
+//       setTimeout(() => {
+//         track.style.transition = "transform 0.7s ease-in-out";
+//       }, 50);
+//     }
+
+//     if (currentIndex < 0) {
+//       track.style.transition = "none";
+//       track.style.transform = `translateX(-${slideCount * 100}%)`;
+//       currentIndex = slideCount - 1;
+//       updateIndicators(currentIndex);
+
+//       setTimeout(() => {
+//         track.style.transition = "transform 0.7s ease-in-out";
+//       }, 50);
+//     }
+//   });
+
+//   // Pause on hover
+//   carouselElement.addEventListener("mouseenter", () => {
+//     clearInterval(autoScrollInterval);
+//   });
+
+//   carouselElement.addEventListener("mouseleave", () => {
+//     startAutoScroll();
+//   });
+
+//   // Touch support
+//   let startX, moveX;
+//   let isDragging = false;
+
+//   carouselElement.addEventListener(
+//     "touchstart",
+//     (e) => {
+//       startX = e.touches[0].clientX;
+//       isDragging = true;
+//       clearInterval(autoScrollInterval);
+//     },
+//     { passive: true }
+//   );
+
+//   carouselElement.addEventListener(
+//     "touchmove",
+//     (e) => {
+//       if (!isDragging) return;
+//       moveX = e.touches[0].clientX;
+//       const diffX = moveX - startX;
+//       const currentTransform = -(currentIndex + 1) * 100;
+
+//       track.style.transition = "none";
+//       track.style.transform = `translateX(calc(${currentTransform}% + ${diffX}px))`;
+//     },
+//     { passive: true }
+//   );
+
+//   carouselElement.addEventListener("touchend", () => {
+//     if (!isDragging) return;
+
+//     const diffX = moveX - startX;
+
+//     if (diffX > 50 && currentIndex > 0) {
+//       goToSlide(currentIndex - 1);
+//     } else if (diffX < -50 && currentIndex < slideCount - 1) {
+//       goToSlide(currentIndex + 1);
+//     } else {
+//       goToSlide(currentIndex);
+//     }
+
+//     isDragging = false;
+//     startAutoScroll();
+//   });
+// }
+
+// // Initialize the carousel
+// document.addEventListener("DOMContentLoaded", () => {
+//   setupCarousel(
+//     document.querySelector("#imageCarousel"),
+//     document.querySelector("#carouselIndicators")
+//   );
+// });
+
+// function setupCarousel(carouselElement, indicatorsElement) {
+//   const track = carouselElement.querySelector(".carousel-track");
+//   const slides = Array.from(track.querySelectorAll(".carousel-slide"));
+//   const slideCount = slides.length;
+//   let currentIndex = 0;
+//   let autoScrollInterval;
+
+//   // Clone first and last slides for infinite effect
+//   const firstSlideClone = slides[0].cloneNode(true);
+//   const lastSlideClone = slides[slideCount - 1].cloneNode(true);
+
+//   track.appendChild(firstSlideClone);
+//   track.insertBefore(lastSlideClone, slides[0]);
+
+//   // Create indicators
+//   slides.forEach((_, index) => {
+//     const indicator = document.createElement("div");
+//     indicator.classList.add("carousel-indicator");
+//     indicator.addEventListener("click", () => {
+//       goToSlide(index);
+//     });
+//     indicatorsElement.appendChild(indicator);
+//   });
+
+//   const indicators = Array.from(
+//     indicatorsElement.querySelectorAll(".carousel-indicator")
+//   );
+
+//   // Set initial position
+//   track.style.transform = `translateX(-${100}%)`;
+//   updateIndicators(0);
+
+//   // Start auto-scroll
+//   startAutoScroll();
+
+//   function startAutoScroll() {
+//     if (autoScrollInterval) clearInterval(autoScrollInterval);
+//     autoScrollInterval = setInterval(() => {
+//       nextSlide();
+//     }, 4000);
+//   }
+
+//   function goToSlide(index) {
+//     const adjustedPosition = (index + 1) * 100;
+//     track.style.transition = "transform 0.7s ease-in-out";
+//     track.style.transform = `translateX(-${adjustedPosition}%)`;
+//     currentIndex = index;
+//     updateIndicators(currentIndex);
+//     startAutoScroll();
+//   }
+
+//   function nextSlide() {
+//     if (currentIndex >= slideCount - 1) {
+//       goToSlide(slideCount - 1 + 1);
+
+//       setTimeout(() => {
+//         track.style.transition = "none";
+//         track.style.transform = `translateX(-${100}%)`;
+//         currentIndex = 0;
+//         updateIndicators(currentIndex);
+
+//         setTimeout(() => {
+//           track.style.transition = "transform 0.7s ease-in-out";
+//         }, 50);
+//       }, 700);
+//     } else {
+//       goToSlide(currentIndex + 1);
+//     }
+//   }
+
+//   function updateIndicators(activeIndex) {
+//     indicators.forEach((indicator, index) => {
+//       if (index === activeIndex) {
+//         indicator.classList.add("active");
+//       } else {
+//         indicator.classList.remove("active");
+//       }
+//     });
+//   }
+
+//   // Handle transition end
+//   track.addEventListener("transitionend", () => {
+//     if (currentIndex >= slideCount) {
+//       track.style.transition = "none";
+//       track.style.transform = `translateX(-${100}%)`;
+//       currentIndex = 0;
+//       updateIndicators(currentIndex);
+
+//       setTimeout(() => {
+//         track.style.transition = "transform 0.7s ease-in-out";
+//       }, 50);
+//     }
+
+//     if (currentIndex < 0) {
+//       track.style.transition = "none";
+//       track.style.transform = `translateX(-${slideCount * 100}%)`;
+//       currentIndex = slideCount - 1;
+//       updateIndicators(currentIndex);
+
+//       setTimeout(() => {
+//         track.style.transition = "transform 0.7s ease-in-out";
+//       }, 50);
+//     }
+//   });
+
+//   // Pause on hover
+//   carouselElement.addEventListener("mouseenter", () => {
+//     clearInterval(autoScrollInterval);
+//   });
+
+//   carouselElement.addEventListener("mouseleave", () => {
+//     startAutoScroll();
+//   });
+
+//   // Touch support
+//   let startX, moveX;
+//   let isDragging = false;
+
+//   carouselElement.addEventListener(
+//     "touchstart",
+//     (e) => {
+//       startX = e.touches[0].clientX;
+//       isDragging = true;
+//       clearInterval(autoScrollInterval);
+//     },
+//     { passive: true }
+//   );
+
+//   carouselElement.addEventListener(
+//     "touchmove",
+//     (e) => {
+//       if (!isDragging) return;
+//       moveX = e.touches[0].clientX;
+//       const diffX = moveX - startX;
+//       const currentTransform = -(currentIndex + 1) * 100;
+
+//       track.style.transition = "none";
+//       track.style.transform = `translateX(calc(${currentTransform}% + ${diffX}px))`;
+//     },
+//     { passive: true }
+//   );
+
+//   carouselElement.addEventListener("touchend", () => {
+//     if (!isDragging) return;
+
+//     const diffX = moveX - startX;
+
+//     if (diffX > 50 && currentIndex > 0) {
+//       goToSlide(currentIndex - 1);
+//     } else if (diffX < -50 && currentIndex < slideCount - 1) {
+//       goToSlide(currentIndex + 1);
+//     } else {
+//       goToSlide(currentIndex);
+//     }
+
+//     isDragging = false;
+//     startAutoScroll();
+//   });
+// }
+
 function setupCarousel(carouselElement, indicatorsElement) {
   const track = carouselElement.querySelector(".carousel-track");
   const slides = Array.from(track.querySelectorAll(".carousel-slide"));
@@ -26,8 +354,9 @@ function setupCarousel(carouselElement, indicatorsElement) {
     indicatorsElement.querySelectorAll(".carousel-indicator")
   );
 
-  // Set initial position
+  // Set initial position and active class
   track.style.transform = `translateX(-${100}%)`;
+  slides[0].classList.add("active");
   updateIndicators(0);
 
   // Start auto-scroll
@@ -45,6 +374,25 @@ function setupCarousel(carouselElement, indicatorsElement) {
     track.style.transition = "transform 0.7s ease-in-out";
     track.style.transform = `translateX(-${adjustedPosition}%)`;
     currentIndex = index;
+
+    // Update active class for animation
+    slides.forEach((slide, i) => {
+      slide.classList.remove("active");
+      if (i === currentIndex) {
+        slide.classList.add("active");
+      }
+    });
+
+    // Update cloned slides
+    firstSlideClone.classList.remove("active");
+    lastSlideClone.classList.remove("active");
+    if (currentIndex === 0) {
+      lastSlideClone.classList.add("active");
+    }
+    if (currentIndex === slideCount - 1) {
+      firstSlideClone.classList.add("active");
+    }
+
     updateIndicators(currentIndex);
     startAutoScroll();
   }
@@ -57,6 +405,9 @@ function setupCarousel(carouselElement, indicatorsElement) {
         track.style.transition = "none";
         track.style.transform = `translateX(-${100}%)`;
         currentIndex = 0;
+        slides.forEach((slide) => slide.classList.remove("active"));
+        slides[0].classList.add("active");
+        lastSlideClone.classList.remove("active");
         updateIndicators(currentIndex);
 
         setTimeout(() => {
@@ -84,6 +435,8 @@ function setupCarousel(carouselElement, indicatorsElement) {
       track.style.transition = "none";
       track.style.transform = `translateX(-${100}%)`;
       currentIndex = 0;
+      slides.forEach((slide) => slide.classList.remove("active"));
+      slides[0].classList.add("active");
       updateIndicators(currentIndex);
 
       setTimeout(() => {
@@ -95,6 +448,8 @@ function setupCarousel(carouselElement, indicatorsElement) {
       track.style.transition = "none";
       track.style.transform = `translateX(-${slideCount * 100}%)`;
       currentIndex = slideCount - 1;
+      slides.forEach((slide) => slide.classList.remove("active"));
+      slides[slideCount - 1].classList.add("active");
       updateIndicators(currentIndex);
 
       setTimeout(() => {
@@ -316,7 +671,6 @@ document.addEventListener("DOMContentLoaded", () => {
 //   // تشغيل تلقائي
 //   let autoSlide = setInterval(nextSlide, 3000);
 // });
-
 
 document.addEventListener("DOMContentLoaded", () => {
   const codeTech_cards = document.querySelector(".codeTech_cards");
